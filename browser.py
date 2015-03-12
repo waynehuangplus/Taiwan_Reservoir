@@ -10,7 +10,7 @@ import os
 
 info = []
 content = {}
-begin = 2013
+begin = 2003
 end = 2014
 
 URL = 'http://fhy.wra.gov.tw/ReservoirPage_2011/StorageCapacity.aspx'
@@ -58,29 +58,31 @@ for year in range(begin, end + 1):
 			soup = BeautifulSoup(page)
 			#print soup.prettify()
 
+			print year, month, day
 
 			""" Parse necessary data """
-			for element in  soup.find(id='frame').tr.next_siblings:
+			for element in soup.find(id='frame').tr.next_siblings:
 	
-				m = re.match(r'<tr>\s*<td>(.*)</td><td align="right">(.*)</td><td>\s*.*\s*.*\s*</td><td align="right">(.*)</td><td align="right">(.*)</td><td align="right">(.*)</td><td align="right">(.*)</td><td>(.*)</td><td>(.*\))</td><td align="right">(.*)</td><td align="right">(.*)</td><td align="right">(.*%)</td>', str(element), re.M)
+				m = re.match(r'(<tr>|<tr class="alternate">)\s*<td>(.*)</td><td align="right">(.*)</td><td>\s*.*<br/>\s*.*\s*</td><td align="right">(.*)</td><td align="right">(.*)</td><td align="right">(.*)</td><td align="right">(.*)</td><td>(.*)</td><td>(.*)</td><td align="right">(.*)</td><td align="right">(.*)</td><td align="right">(.*)</td>', str(element), re.M)
 
 				if m:
+					print m.group(2)
 					content = {
-				"name": m.group(1),
-				"capacity": m.group(2),
-				"rain": m.group(3),
-				"income": m.group(4),
-				"outcome": m.group(5),
-				"diff": m.group(6),
-				"nuclear": m.group(7),
-				"now_time": m.group(8),
-				"now_level": m.group(9),
-				"now_capacity": m.group(10),
-				"now_percent": m.group(11)
+				"name": m.group(2),
+				"capacity": m.group(3),
+				"rain": m.group(4),
+				"income": m.group(5),
+				"outcome": m.group(6),
+				"diff": m.group(7),
+				"nuclear": m.group(8),
+				"now_time": m.group(9),
+				"now_level": m.group(10),
+				"now_capacity": m.group(11),
+				"now_percent": m.group(12)
 						}
 					info.append(content)
 					f.write(json.dumps(content, ensure_ascii=False))
-					#print m.group(1), m.group(2), m.group(3), m.group(4), m.group(5), m.group(6), m.group(7), m.group(8), m.group(9), m.group(10), m.group(11)
+					#print m.group(2), m.group(3), m.group(4), m.group(5), m.group(6), m.group(7), m.group(8), m.group(9), m.group(10), m.group(11), m.group(12)
 			f.close	
 			#print info[1]
 
