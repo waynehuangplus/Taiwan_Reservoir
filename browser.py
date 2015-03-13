@@ -6,12 +6,15 @@ from bs4 import BeautifulSoup
 import calendar
 import json
 import os
-
+from datetime import datetime, timedelta
+import sys
 
 info = []
 content = {}
-begin = 2003
-end = 2014
+begin = 2010
+end = 2015
+
+now = datetime.now()
 
 URL = 'http://fhy.wra.gov.tw/ReservoirPage_2011/StorageCapacity.aspx'
 br = mechanize.Browser()
@@ -25,6 +28,12 @@ for year in range(begin, end + 1):
 
 		for day in range(1, days + 1):
 			
+			""" it will delay 1~2 days for data update, so will fetch (now - 2) days """
+			if datetime(year, month, day) > now - timedelta(days=2):
+				print "date upate to", year, month, (day - 1)
+				sys.exit(0)
+			
+
 			""" Create folder and file for storing data """
 			c_path = os.getcwd()
 			directory = c_path + '/' +str(year)
@@ -66,7 +75,7 @@ for year in range(begin, end + 1):
 				m = re.match(r'(<tr>|<tr class="alternate">)\s*<td>(.*)</td><td align="right">(.*)</td><td>\s*.*<br/>\s*.*\s*</td><td align="right">(.*)</td><td align="right">(.*)</td><td align="right">(.*)</td><td align="right">(.*)</td><td>(.*)</td><td>(.*)</td><td align="right">(.*)</td><td align="right">(.*)</td><td align="right">(.*)</td>', str(element), re.M)
 
 				if m:
-					print m.group(2)
+					#print m.group(2)
 					content = {
 				"name": m.group(2),
 				"capacity": m.group(3),
@@ -81,7 +90,12 @@ for year in range(begin, end + 1):
 				"now_percent": m.group(12)
 						}
 					info.append(content)
-					f.write(json.dumps(content, ensure_ascii=False))
+					#f.write(json.dumps(content, ensure_ascii=False))
+					#json.dumps(content, f, ensure_ascii=False)
+					#json.dump(content, f, ensure_ascii=False)
+					json.dump(content, f)
+					#f.write('\n')
+					
 					#print m.group(2), m.group(3), m.group(4), m.group(5), m.group(6), m.group(7), m.group(8), m.group(9), m.group(10), m.group(11), m.group(12)
 			f.close	
 			#print info[1]
