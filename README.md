@@ -1,5 +1,11 @@
 # Taiwan_Reservoir
-Parse the Taiwan reservoir related data from Taiwan Water Resource Agency
+The target of this reposiroy is to provide water statistics of Taiwan reservoir.
+
+However, Taiwan Water Resource Agency doesn't provide RSS or other subscriptions to let you get the raw data.
+
+I parse all the data from the earliest year they have.
+
+You can use it to do analysis or draw the trend diagram.
 
 # Data Source
 Water Resouces Agency, Ministry of Economic Affairs, Taiwan
