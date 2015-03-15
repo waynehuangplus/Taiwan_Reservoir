@@ -92,8 +92,7 @@ for reservior in {'主要水庫', '所有水庫', '水庫及攔河堰'}:
 
 					if m:
 						#print m.group(2), m.group(3), m.group(4), m.group(5), m.group(6), m.group(7), m.group(8), m.group(9), m.group(10), m.group(11), m.group(12), m.group(13), m.group(14)
-						content = 
-							{
+						content = {
 							"name": m.group(2),
 							"daily": 
 								{
